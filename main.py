@@ -25,9 +25,9 @@ def click_with_mouse_emulation(driver, element):
     actions.move_to_element(element).pause(random.uniform(0.05, 0.1)).click().perform()
 
 # Функция для нажатия на кнопку
-def click_button(driver):
-    button_xpath = '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/textarea'  # Измените на актуальный XPath
-    button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, button_xpath)))
+def click_button(driver, xpath):
+    button_xpath = '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/textarea'
+    button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, xpath)))
     click_with_mouse_emulation(driver, button)
     random_sleep()
 
@@ -62,9 +62,6 @@ for i in range(num_tabs):
     # Не загружаем страницу заново, если она уже загружена
     driver.get("https://www.google.com")  # Можно заменить на актуальный URL, если нужно
 
-    # Выполняем действия на каждой вкладке
-    click_button(driver)
-
     # Вводим пароль из файла
     if i < len(passwords):
         enter_twitch_from_line(driver, passwords[i])
@@ -74,6 +71,13 @@ for i in range(num_tabs):
     # Уменьшаем время ожидания, чтобы ускорить процесс
     random_sleep(0.2, 0.5)
 
+button_xpath1 = '/html/body/div[3]/div/div[12]/div[1]/div[2]/div[2]/div/div/div[1]/div/div/div/div/div/div/div/div[1]/div/span/a/h3'
+# Кликаем по кнопке на каждой вкладке
+for i in range(num_tabs):
+    driver.switch_to.window(driver.window_handles[i])  # Переключаемся на вкладку
+    click_button(driver, button_xpath1)
+
+# Завершаем выполнение программы
 input("Нажмите Enter, чтобы закрыть браузер...")
 
 driver.quit()
